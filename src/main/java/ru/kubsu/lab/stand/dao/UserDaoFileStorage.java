@@ -1,16 +1,15 @@
 package ru.kubsu.lab.stand.dao;
 
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.type.CollectionType;
-import com.fasterxml.jackson.databind.type.TypeFactory;
 import ru.kubsu.lab.stand.exception.UserDaoException;
 import ru.kubsu.lab.stand.model.UserModel;
 
-import javax.imageio.IIOException;
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class UserDaoFileStorage implements IUserDao {
@@ -27,37 +26,38 @@ public class UserDaoFileStorage implements IUserDao {
 
     @Override
     public UserModel getUser(String login) {
-
-        List<UserModel> userModelList = getDataFromFile();
-
-        return userModelList
-                .stream()
-                .filter(userModel -> userModel.getLogin().equals(login))
-                .findFirst()
-                .orElse(null);
-
+        return getDataFromFile().get(login);
     }
 
 
     @Override
-    public List<UserModel> getUserList() {
-        return this.getDataFromFile();
+    public Collection<UserModel> getUserList() {
+        return this.getDataFromFile().values();
     }
 
     @Override
     public UserModel saveUser(UserModel userModel) throws UserDaoException {
 
-        List<UserModel> userModelList = getDataFromFile();
-        if (userModelList.remove(userModel)) {
-            System.out.println("Обновление данных по пользователю " + userModel.getLogin());
+        Map<String, UserModel> userModelMap = getDataFromFile();
+
+        UserModel saveUserModel = userModelMap.get(userModel.getLogin());
+
+        if (saveUserModel == null || !saveUserModel.equals(userModel)) {
+
+            userModelMap.put(userModel.getLogin(), userModel);
+
+            if (!saveDataInFile(userModelMap)) {
+                throw new UserDaoException("Ошибка сохранения");
+            }
+
+            String message = saveUserModel != null
+                    ? String.format("Обновление данных по пользователю - %s", saveUserModel.getLogin())
+                    : String.format("Добавлен новый пользователь - %s", userModel.getLogin());
+
+            System.out.println(message);
+
         } else {
-            System.out.println("Добавлен новый пользователь " + userModel.getLogin());
-        }
-
-        userModelList.add(userModel);
-
-        if (!saveDataInFile(userModelList)) {
-            throw new UserDaoException("Ошибка сохранения");
+            System.out.println("Changes by user not detected!!!");
         }
 
         return userModel;
@@ -67,14 +67,23 @@ public class UserDaoFileStorage implements IUserDao {
 
     @Override
     public void deleteUser(UserModel userModel) throws UserDaoException {
+        Map<String, UserModel> userModelList = getDataFromFile();
 
+//        if (userModelList.remove(userModel)) {
+//            System.out.println("Данные о пользователе " + userModel.getLogin() + " удалены.");
+//        } else {
+//            System.out.println("User not founded");
+//        }
+//        if (!saveDataInFile(userModelList)){
+//            throw new UserDaoException("Ошибка сохранения");
+//        }
     }
 
 
-    private boolean saveDataInFile(List<UserModel> userModelList) {
+    private boolean saveDataInFile(Map<String, UserModel> userModelMap) {
         ObjectMapper objectMapper = new ObjectMapper();
         try {
-            objectMapper.writeValue(file, userModelList);
+            objectMapper.writeValue(file, userModelMap);
             return true;
         } catch (IOException e) {
             e.printStackTrace();
@@ -83,18 +92,15 @@ public class UserDaoFileStorage implements IUserDao {
     }
 
 
-    private List<UserModel> getDataFromFile() {
-
+    private Map<String, UserModel> getDataFromFile() {
         ObjectMapper objectMapper = new ObjectMapper();
-        CollectionType collectionType = objectMapper.getTypeFactory().constructCollectionType(List.class, UserModel.class);
-
+        JavaType javaType = objectMapper.getTypeFactory().constructMapType(Map.class, String.class, UserModel.class);
         try {
-            return objectMapper.readValue(file, collectionType);
+            return objectMapper.readValue(file, javaType);
         } catch (IOException e) {
             System.out.println(e.getMessage());
-            return new ArrayList<>();
+            return new HashMap<>();
         }
-
     }
 
 

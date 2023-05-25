@@ -4,6 +4,8 @@ import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.model.UserModel;
 import ru.kubsu.lab.stand.service.IUserManager;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 public class ConsoleMaintainer {
@@ -18,9 +20,9 @@ public class ConsoleMaintainer {
 
     public void run() {
 
-//        String login = "her";
-//        String pass = "12345";
-//
+        String login = "her";
+        String pass = "12345";
+
 //        try {
 //
 //            UserModel userModel = userManager.login(login, pass);
@@ -35,17 +37,17 @@ public class ConsoleMaintainer {
 
 //        UserModel userModel = new UserModel();
 //
-//        userModel.setLogin("rusik1");
-//        userModel.setName("Ruslan1212321");
-//        userModel.setPass("123123123");
+//        userModel.setLogin("Ахмед");
+//        userModel.setName("Гаджиев");
+//        userModel.setPass("her");
 //        userModel.setPhone("33342324");
 //
 //
 //        userManager.saveUser(userModel);
 
 
-        List<UserModel> list = userManager.findUsers(null, null,null);
-        System.out.println(1);
+        Collection<UserModel> list = userManager.findUsers(null, null,null);
+        System.out.println(new ArrayList<>(list).get(0).getLogin());
 
 
 

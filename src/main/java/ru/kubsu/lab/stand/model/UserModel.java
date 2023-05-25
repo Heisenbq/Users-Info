@@ -84,19 +84,11 @@ public class UserModel {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         UserModel userModel = (UserModel) o;
-        return Objects.equals(login, userModel.login);
+        return Objects.equals(login, userModel.login) && Objects.equals(pass, userModel.pass) && Objects.equals(name, userModel.name) && Objects.equals(surname, userModel.surname) && Objects.equals(middleName, userModel.middleName) && Objects.equals(email, userModel.email) && Objects.equals(phone, userModel.phone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(login);
-    }
-
-    @Override
-    public String toString() {
-        return "UserModel{" +
-                "login='" + login + '\'' +
-                ", name='" + name + '\'' +
-                '}';
+        return Objects.hash(login, pass, name, surname, middleName, email, phone);
     }
 }

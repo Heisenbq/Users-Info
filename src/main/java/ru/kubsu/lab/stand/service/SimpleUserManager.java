@@ -5,7 +5,10 @@ import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.exception.UserDaoException;
 import ru.kubsu.lab.stand.model.UserModel;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 public class SimpleUserManager implements IUserManager {
 
@@ -45,8 +48,18 @@ public class SimpleUserManager implements IUserManager {
 
 
     @Override
-    public List<UserModel> findUsers(String login, String name, String phone) {
-        return userDao.getUserList();
+    public Collection<UserModel> findUsers(String login, String name, String phone) {
+
+
+        return userDao.getUserList()
+                .stream()
+                .filter(
+                        userModel -> (login == null || userModel.getLogin().equals(login)) &&
+                                (name == null || userModel.getName().equals(name)) &&
+                                (phone == null || userModel.getPhone().equals(phone))
+                )
+                .collect(Collectors.toList());
+
     }
 
 
