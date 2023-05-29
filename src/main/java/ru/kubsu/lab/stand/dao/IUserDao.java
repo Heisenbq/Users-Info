@@ -13,12 +13,15 @@ public interface IUserDao {
 
     Collection<UserModel> getUserList();
 
+
+    boolean isExistUser(String login);
+
     UserModel saveUser(UserModel userModel) throws UserDaoException;
 
     void deleteUser(UserModel userModel) throws UserDaoException;
 
 
-    private void tet () {
+    private void tet() {
 
     }
 

@@ -1,6 +1,7 @@
 package ru.kubsu.lab.stand.presentation;
 
 import ru.kubsu.lab.stand.exception.UserAuthException;
+import ru.kubsu.lab.stand.model.SortModel;
 import ru.kubsu.lab.stand.model.UserModel;
 import ru.kubsu.lab.stand.service.IUserManager;
 
@@ -20,9 +21,9 @@ public class ConsoleMaintainer {
 
     public void run() {
 
-        String login = "her";
-        String pass = "12345";
-
+//        String login = "her";
+//        String pass = "12345";
+//
 //        try {
 //
 //            UserModel userModel = userManager.login(login, pass);
@@ -35,19 +36,25 @@ public class ConsoleMaintainer {
 
 
 
-//        UserModel userModel = new UserModel();
-//
-//        userModel.setLogin("Ахмед");
-//        userModel.setName("Гаджиев");
-//        userModel.setPass("her");
-//        userModel.setPhone("33342324");
-//
-//
-//        userManager.saveUser(userModel);
+        UserModel userModel = new UserModel();
+
+        userModel.setLogin("Akhmed2");
+        userModel.setName("Gadjievs");
+        userModel.setPass("her");
+        userModel.setPhone("33342324");
 
 
-        Collection<UserModel> list = userManager.findUsers(null, null,null);
+        // userManager.saveUser(userModel);
+        //userManager.deleteUser(userModel);
+
+        SortModel sortModel = SortModel.buildDefault();
+
+        sortModel.setField("login");
+        sortModel.setDirection(SortModel.Direction.ASC);
+
+        Collection<UserModel> list = userManager.findUsers(null, null,null, sortModel);
         System.out.println(new ArrayList<>(list).get(0).getLogin());
+
 
 
 

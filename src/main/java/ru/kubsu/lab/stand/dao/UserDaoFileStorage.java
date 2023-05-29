@@ -35,6 +35,12 @@ public class UserDaoFileStorage implements IUserDao {
         return this.getDataFromFile().values();
     }
 
+
+    @Override
+    public boolean isExistUser(String login) {
+        return getDataFromFile().containsKey(login);
+    }
+
     @Override
     public UserModel saveUser(UserModel userModel) throws UserDaoException {
 
@@ -66,17 +72,20 @@ public class UserDaoFileStorage implements IUserDao {
 
 
     @Override
-    public void deleteUser(UserModel userModel) throws UserDaoException {
-        Map<String, UserModel> userModelList = getDataFromFile();
+    public void deleteUser(UserModel userModel) throws UserDaoException {// пока что только по ключу мапы,т.е. по логину
+        Map<String, UserModel> userModelMap = getDataFromFile();
 
-//        if (userModelList.remove(userModel)) {
-//            System.out.println("Данные о пользователе " + userModel.getLogin() + " удалены.");
-//        } else {
-//            System.out.println("User not founded");
-//        }
-//        if (!saveDataInFile(userModelList)){
-//            throw new UserDaoException("Ошибка сохранения");
-//        }
+        UserModel deleteUserModel=userModelMap.get(userModel.getLogin());// удаляемый пользак
+
+        if (deleteUserModel==null){
+            System.out.println("Такого пользователя не существует.");
+        }else{
+            userModelMap.remove(deleteUserModel.getLogin());
+            if (!saveDataInFile(userModelMap)){
+                throw new UserDaoException("Ошибка сохранения");
+            }
+            System.out.println("Пользователь "+deleteUserModel.getLogin() + " удален.");
+        }
     }
 
 
