@@ -1,5 +1,6 @@
 package ru.kubsu.lab.stand.presentation;
 
+import ru.kubsu.lab.stand.Sort.SortByLogin;
 import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.model.SortModel;
 import ru.kubsu.lab.stand.model.UserModel;
@@ -7,6 +8,7 @@ import ru.kubsu.lab.stand.service.IUserManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 public class ConsoleMaintainer {
@@ -38,7 +40,7 @@ public class ConsoleMaintainer {
 
         UserModel userModel = new UserModel();
 
-        userModel.setLogin("Akhmed2");
+        userModel.setLogin("Aaa");
         userModel.setName("Gadjievs");
         userModel.setPass("her");
         userModel.setPhone("33342324");
@@ -46,7 +48,7 @@ public class ConsoleMaintainer {
 
         // userManager.saveUser(userModel);
         //userManager.deleteUser(userModel);
-
+        userManager.addUser(userModel);
         SortModel sortModel = SortModel.buildDefault();
 
         sortModel.setField("login");

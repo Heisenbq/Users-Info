@@ -1,15 +1,14 @@
 package ru.kubsu.lab.stand.service;
 
+import ru.kubsu.lab.stand.Sort.SortByLogin;
+import ru.kubsu.lab.stand.Sort.SortUsers;
 import ru.kubsu.lab.stand.dao.IUserDao;
 import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.exception.UserDaoException;
 import ru.kubsu.lab.stand.model.SortModel;
 import ru.kubsu.lab.stand.model.UserModel;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -96,7 +95,7 @@ public class SimpleUserManager implements IUserManager {
     }
 
     @Override
-    public Collection<UserModel> findUsers(String login, String name, String phone, SortModel sortModel) {
+    public List<UserModel> findUsers(String login, String name, String phone, SortModel sortModel) {
 
         return userDao.getUserList()
                 .stream()
@@ -105,14 +104,15 @@ public class SimpleUserManager implements IUserManager {
                                 (name == null || userModel.getName().equals(name)) &&
                                 (phone == null || userModel.getPhone().equals(phone))
                 )
-                .sorted(Comparator.comparing(UserModel::getLogin))
+//                .sorted(Comparator.comparing(UserModel::getLogin))
                 .collect(Collectors.toList());
-
-
-
-
-
     }
 
+    @Override
+    public void sort(SortUsers sortUsers) {
+//        List list=new ArrayList<>(findUsers(null,null,null,null));
+//        Collections.sort(list,new SortByLogin());
+
+    }
 }
 
