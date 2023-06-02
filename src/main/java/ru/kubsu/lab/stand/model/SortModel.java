@@ -4,27 +4,30 @@ import java.util.Comparator;
 
 public class SortModel {
 
-    public enum Direction {ASC, DESC};
+    public enum Direction {ASC, DESC}
 
-    private String field;
+    public enum Field {LOGIN, NAME, SURNAME, MIDDLE_NAME, EMAIL}
+
+
+    private Field field;
 
     private Direction direction;
 
 
-
-    public SortModel(String field, Direction direction) {
+    public SortModel(Field field, Direction direction) {
         this.field = field;
         this.direction = direction;
     }
 
     public SortModel() {
+        this.field = Field.LOGIN;
     }
 
-    public String getField() {
+    public Field getField() {
         return field;
     }
 
-    public void setField(String field) {
+    public void setField(Field field) {
         this.field = field;
     }
 
@@ -36,8 +39,26 @@ public class SortModel {
         this.direction = direction;
     }
 
-    public  <T> Comparator<T> getComparator() {
-        return null;
+    public Comparator<UserModel> getComparator() {
+
+        Comparator<UserModel> comparator = Comparator.comparing(UserModel::getLogin);
+
+        if (field == Field.NAME) {
+            comparator = Comparator.comparing(UserModel::getName);
+        } else if (field == Field.SURNAME) {
+            comparator = Comparator.comparing(UserModel::getSurname);
+        } else if (field == Field.MIDDLE_NAME) {
+            comparator = Comparator.comparing(UserModel::getMiddleName);
+        } else if (field == Field.EMAIL) {
+            comparator = Comparator.comparing(UserModel::getEmail);
+        }
+
+        if (direction == Direction.DESC) {
+            comparator = comparator.reversed();
+        }
+
+        return comparator;
+
     }
 
     public static SortModel buildDefault() {

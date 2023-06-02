@@ -1,7 +1,6 @@
 package ru.kubsu.lab.stand.service;
 
-import ru.kubsu.lab.stand.Sort.SortByLogin;
-import ru.kubsu.lab.stand.Sort.SortUsers;
+
 import ru.kubsu.lab.stand.dao.IUserDao;
 import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.exception.UserDaoException;
@@ -53,7 +52,7 @@ public class SimpleUserManager implements IUserManager {
     public boolean updateUser(UserModel userModel) {
 
         if (!userDao.isExistUser(userModel.getLogin())) {
-            System.out.println("Нету его");
+            System.out.println("Пользователя с логином "+userModel.getLogin()+" уже существует!");
             return false;
         }
 
@@ -95,7 +94,14 @@ public class SimpleUserManager implements IUserManager {
     }
 
     @Override
-    public List<UserModel> findUsers(String login, String name, String phone, SortModel sortModel) {
+    public Collection<UserModel> findUsers(String login, String name, String phone, SortModel sortModel) {
+
+        Predicate<UserModel> p = userModel -> userModel.getLogin().equals("1");
+        Predicate<UserModel> pd = userModel -> userModel.getName().equals("43");
+        p.and(pd);
+
+
+
 
         return userDao.getUserList()
                 .stream()
@@ -104,15 +110,9 @@ public class SimpleUserManager implements IUserManager {
                                 (name == null || userModel.getName().equals(name)) &&
                                 (phone == null || userModel.getPhone().equals(phone))
                 )
-//                .sorted(Comparator.comparing(UserModel::getLogin))
+                .sorted(sortModel.getComparator())
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public void sort(SortUsers sortUsers) {
-//        List list=new ArrayList<>(findUsers(null,null,null,null));
-//        Collections.sort(list,new SortByLogin());
-
-    }
 }
 

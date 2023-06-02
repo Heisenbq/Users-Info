@@ -1,6 +1,6 @@
 package ru.kubsu.lab.stand.service;
 
-import ru.kubsu.lab.stand.Sort.SortUsers;
+
 import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.model.SortModel;
 import ru.kubsu.lab.stand.model.UserModel;
@@ -18,7 +18,7 @@ public interface IUserManager {
 
     boolean deleteUser (UserModel usermodel);
 
-    void sort(SortUsers sortUsers);
+
 
 
 
