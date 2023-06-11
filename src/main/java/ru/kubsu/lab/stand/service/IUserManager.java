@@ -2,16 +2,16 @@ package ru.kubsu.lab.stand.service;
 
 
 import ru.kubsu.lab.stand.exception.UserAuthException;
-import ru.kubsu.lab.stand.model.SortModel;
+import ru.kubsu.lab.stand.utils.UserFilter;
+import ru.kubsu.lab.stand.utils.UserSort;
 import ru.kubsu.lab.stand.model.UserModel;
 
 import java.util.Collection;
-import java.util.List;
 
 public interface IUserManager {
 
     UserModel login (String login, String pass) throws UserAuthException;
-    Collection<UserModel> findUsers (String login, String name, String phone, SortModel sortModel);
+    Collection<UserModel> findUsers (UserFilter userFilter, UserSort userSort);
 
     boolean updateUser(UserModel userModel);
     boolean addUser (UserModel userModel);

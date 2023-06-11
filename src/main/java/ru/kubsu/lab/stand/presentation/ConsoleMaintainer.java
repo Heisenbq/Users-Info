@@ -1,11 +1,14 @@
 package ru.kubsu.lab.stand.presentation;
 
-import ru.kubsu.lab.stand.model.SortModel;
-import ru.kubsu.lab.stand.model.UserModel;
+import ru.kubsu.lab.stand.model.*;
 import ru.kubsu.lab.stand.service.IUserManager;
+import ru.kubsu.lab.stand.utils.Direction;
+import ru.kubsu.lab.stand.utils.Field;
+import ru.kubsu.lab.stand.utils.UserFilter;
+import ru.kubsu.lab.stand.utils.UserSort;
 
 import java.util.*;
-import java.util.function.Function;
+
 
 public class ConsoleMaintainer {
 
@@ -33,6 +36,7 @@ public class ConsoleMaintainer {
 //            System.out.println(e.getMessage());
 //        }
 
+/*
 
         UserModel userModel = new UserModel();
 
@@ -40,26 +44,28 @@ public class ConsoleMaintainer {
         userModel.setName("Gadjievs");
         userModel.setPass("her");
         userModel.setPhone("33342324");
+*/
 
 
         // userManager.saveUser(userModel);
         //userManager.deleteUser(userModel);
 
-        SortModel sortModel = SortModel.buildDefault();
+        UserFilter userFilter =
+                UserFilter.buildDefault()
+                        .addField(Field.NAME.byVal(""))
+                        .addField(Field.LOGIN.byVal("Akhmed"));
 
-        sortModel.setField(SortModel.Field.NAME);
-        sortModel.setDirection(SortModel.Direction.ASC);
+        UserSort userSort = UserSort.build(Field.EMAIL, Direction.DESC);
 
-        Collection<UserModel> userModelCollection = userManager.findUsers(null, null, null, sortModel);
+        Collection<UserModel> userModelCollection = userManager.findUsers(userFilter, userSort);
 
         System.out.println(1);
 
-
     }
 
-    public void test () {
+    public void test() {
 
-        Collection<UserModel> userModelCollection = userManager.findUsers(null, null, null, null);
+        Collection<UserModel> userModelCollection = userManager.findUsers(null, null);
 
         List<UserModel> userModelList = new ArrayList<>(userModelCollection);
 
@@ -90,11 +96,9 @@ public class ConsoleMaintainer {
         userModelList.sort(userModelComparator2);
 
 
-
         System.out.println(1);
 
     }
-
 
 
 }

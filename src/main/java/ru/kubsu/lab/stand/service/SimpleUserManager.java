@@ -4,7 +4,8 @@ package ru.kubsu.lab.stand.service;
 import ru.kubsu.lab.stand.dao.IUserDao;
 import ru.kubsu.lab.stand.exception.UserAuthException;
 import ru.kubsu.lab.stand.exception.UserDaoException;
-import ru.kubsu.lab.stand.model.SortModel;
+import ru.kubsu.lab.stand.utils.UserFilter;
+import ru.kubsu.lab.stand.utils.UserSort;
 import ru.kubsu.lab.stand.model.UserModel;
 
 import java.util.*;
@@ -52,7 +53,7 @@ public class SimpleUserManager implements IUserManager {
     public boolean updateUser(UserModel userModel) {
 
         if (!userDao.isExistUser(userModel.getLogin())) {
-            System.out.println("Пользователя с логином "+userModel.getLogin()+" уже существует!");
+            System.out.println("Пользователя с логином " + userModel.getLogin() + " уже существует!");
             return false;
         }
 
@@ -82,6 +83,8 @@ public class SimpleUserManager implements IUserManager {
         }
     }
 
+
+
     @Override
     public boolean deleteUser(UserModel usermodel) {
         try {
@@ -94,24 +97,15 @@ public class SimpleUserManager implements IUserManager {
     }
 
     @Override
-    public Collection<UserModel> findUsers(String login, String name, String phone, SortModel sortModel) {
-
-        Predicate<UserModel> p = userModel -> userModel.getLogin().equals("1");
-        Predicate<UserModel> pd = userModel -> userModel.getName().equals("43");
-        p.and(pd);
-
-
+    public Collection<UserModel> findUsers(UserFilter userFilter, UserSort userSort) {
 
 
         return userDao.getUserList()
                 .stream()
-                .filter(
-                        userModel -> (login == null || userModel.getLogin().equals(login)) &&
-                                (name == null || userModel.getName().equals(name)) &&
-                                (phone == null || userModel.getPhone().equals(phone))
-                )
-                .sorted(sortModel.getComparator())
+                .filter(userFilter.getPredicate())
+                .sorted(userSort.getComparator())
                 .collect(Collectors.toList());
+
     }
 
 }
