@@ -1,7 +1,7 @@
 package ru.kubsu.lab.stand.utils;
 
 public enum Field {
-    LOGIN, NAME, SURNAME, MIDDLE_NAME, EMAIL;
+    LOGIN, NAME, SURNAME, MIDDLE_NAME, EMAIL,NUMBER;
 
     private String val;
 

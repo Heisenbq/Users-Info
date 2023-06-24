@@ -41,6 +41,9 @@ public class UserFilter {
             if (field == Field.EMAIL) {
                 base = base.and(userModel -> userModel.getEmail() != null && userModel.getEmail().contains(field.getVal()));
             }
+            if (field == Field.NUMBER){
+                base = base.and(userModel -> userModel.getEmail() != null && userModel.getPhone().contains(field.getVal()));
+            }
 
 
         }

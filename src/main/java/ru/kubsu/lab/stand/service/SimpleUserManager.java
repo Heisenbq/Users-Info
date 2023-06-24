@@ -9,7 +9,6 @@ import ru.kubsu.lab.stand.utils.UserSort;
 import ru.kubsu.lab.stand.model.UserModel;
 
 import java.util.*;
-import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class SimpleUserManager implements IUserManager {
@@ -38,22 +37,12 @@ public class SimpleUserManager implements IUserManager {
 
     }
 
-//
-//    @Override
-//    public void saveUser(UserModel userModel) {
-//        try {
-//            userDao.saveUser(userModel);
-//        } catch (UserDaoException e) {
-//            System.out.println(e.getMessage());
-//        }
-//    }
-
 
     @Override
     public boolean updateUser(UserModel userModel) {
 
         if (!userDao.isExistUser(userModel.getLogin())) {
-            System.out.println("Пользователя с логином " + userModel.getLogin() + " уже существует!");
+            System.out.println("Пользователя с логином " + userModel.getLogin() + " не существует!");
             return false;
         }
 
@@ -71,7 +60,7 @@ public class SimpleUserManager implements IUserManager {
     @Override
     public boolean addUser(UserModel userModel) {
         if (userDao.isExistUser(userModel.getLogin())) {
-            System.out.println("Пользователь с логином " + userModel.getLogin() + " уже существует.");
+            System.out.println("Пользователь с логином " + userModel.getLogin() + " уже существует!");
             return false;
         }
         try {
