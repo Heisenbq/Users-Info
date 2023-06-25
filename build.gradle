@@ -1,5 +1,8 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.beryx.jlink' version '2.25.0'
+
 }
 
 group 'ru.kubsu.lab.stand'
@@ -12,9 +15,31 @@ repositories {
 dependencies {
 
     implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.9.8'
-
+    implementation group: 'javax.mail', name: 'javax.mail-api', version: '1.6.2'
+    implementation group: 'com.sun.mail', name: 'javax.mail', version: '1.6.2'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+//jar {
+//    manifest {
+//        attributes "Main-Class": "ru.kubsu.lab.stand.UsersInfoApp"
+//    }
+//
+//    from {
+//        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+//    }
+//}
+
+
+task customFatJar(type: Jar) {
+    manifest {
+        attributes 'Main-Class': 'ru.kubsu.lab.stand.UsersInfoApp'
+    }
+    baseName = 'all-in-one-jar'
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    from { configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) } }
+    with jar
 }
 
 test {

@@ -10,7 +10,7 @@ import java.util.Collection;
 
 public interface IUserManager {
 
-    UserModel login (String login, String pass) throws UserAuthException;
+    UserModel login (String login, Integer pass) throws UserAuthException;
     Collection<UserModel> findUsers (UserFilter userFilter, UserSort userSort);
 
     boolean updateUser(UserModel userModel);

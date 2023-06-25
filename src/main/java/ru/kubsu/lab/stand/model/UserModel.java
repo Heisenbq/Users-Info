@@ -5,7 +5,7 @@ import java.util.Objects;
 public class UserModel {
     //just information fields about users and getters/setters for fields
     private String login;
-    private String pass;
+    private Integer pass;
     private String name;
     private String surname;
     private String middleName;
@@ -13,7 +13,7 @@ public class UserModel {
     private String phone;
 
 
-    public UserModel(String login, String pass) {
+    public UserModel(String login, Integer pass) {
         this.login = login;
         this.pass = pass;
     }
@@ -30,11 +30,11 @@ public class UserModel {
         this.login = login;
     }
 
-    public String getPass() {
+    public Integer getPass() {
         return pass;
     }
 
-    public void setPass(String pass) {
+    public void setPass(Integer pass) {
         this.pass = pass;
     }
 

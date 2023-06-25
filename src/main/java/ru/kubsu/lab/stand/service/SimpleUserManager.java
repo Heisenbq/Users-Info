@@ -21,10 +21,8 @@ public class SimpleUserManager implements IUserManager {
     }
 
     @Override
-    public UserModel login(String login, String pass) throws UserAuthException {
-
+    public UserModel login(String login, Integer pass) throws UserAuthException {
         UserModel userModel = userDao.getUser(login);
-
         if (userModel == null) {
             throw new UserAuthException("Пользователь не найден.");
         }
